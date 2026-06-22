@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Nutrition Tracker — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;
+  --bg:#F7F7F5;--white:#FFFFFF;--text:#1a1a18;--muted:#6b6b67;--muted-light:#9b9b97;
+  --border:rgba(0,0,0,0.08);--border-strong:rgba(0,0,0,0.13);
+  --radius:18px;--radius-sm:10px;--radius-xs:6px;
+  --blue:#4285F4;--blue-light:#e8f0fe;--blue-dark:#1a3a6e;
+  --purple:#7F77DD;--purple-light:#EEEDFE;--purple-dark:#26215C;
+  --amber:#BA7517;--amber-light:#FAEEDA;--amber-dark:#412402;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* ── HERO ── */
+.hero{background:var(--white);border-bottom:1px solid var(--border);padding:80px 24px 68px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-light);color:var(--green-dark);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:24px}
+.hero-badge .dot{width:6px;height:6px;background:var(--green);border-radius:50%}
+.hero h1{font-size:clamp(36px,5.5vw,58px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin-bottom:18px}
+.hero h1 .accent{color:var(--green)}
+.hero-sub{font-size:17px;color:var(--muted);max-width:540px;margin:0 auto 12px;line-height:1.65}
+.hero-desc{font-size:14px;color:var(--muted-light);max-width:500px;margin:0 auto 36px;line-height:1.7}
+.hero-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:100px;font-size:14px;font-weight:500;text-decoration:none;transition:opacity .15s;cursor:pointer}
+.btn:hover{opacity:.8}
+.btn-primary{background:var(--green);color:#fff}
+.btn-outline{background:transparent;color:var(--text);border:1.5px solid rgba(0,0,0,0.15)}
+.btn-blue{background:var(--blue-light);color:var(--blue-dark);border:1.5px solid rgba(66,133,244,.2)}
+
+/* ── LAYOUT ── */
+.container{max-width:980px;margin:0 auto;padding:0 24px}
+section{padding:72px 0}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.section-title{font-size:clamp(22px,3vw,30px);font-weight:600;letter-spacing:-.018em;margin-bottom:8px}
+.section-desc{font-size:15px;color:var(--muted);max-width:600px;line-height:1.65}
+.section-header{margin-bottom:40px}
+.divider{border:none;border-top:1px solid var(--border)}
+
+/* ── TOC ── */
+.toc{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px}
+.toc-inner{max-width:980px;margin:0 auto;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{flex-shrink:0;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:14px 16px;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
+.toc-link:hover{color:var(--text)}
+.toc-link.active{color:var(--green);border-bottom-color:var(--green)}
+
+/* ── SCREENS ── */
+.screens-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:700px){.screens-grid{grid-template-columns:repeat(2,1fr)}}
+.screen-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;transition:transform .2s,box-shadow .2s}
+.screen-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.07)}
+.screen-card img{width:100%;display:block}
+.screen-label{padding:10px 14px;font-size:12px;font-weight:500;color:var(--muted);border-top:1px solid var(--border)}
+
+/* ── FEATURE CARDS ── */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:720px){.features-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.features-grid{grid-template-columns:1fr}}
+.feature-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.feature-icon{width:40px;height:40px;background:var(--green-light);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.feature-icon svg{width:20px;height:20px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.feature-card h3{font-size:14px;font-weight:600;margin-bottom:6px}
+.feature-card p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ── MODULE CARDS ── */
+.module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:720px){.module-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.module-grid{grid-template-columns:1fr}}
+.module-card{border-radius:var(--radius-sm);border:1px solid var(--border);padding:16px 18px}
+.module-name{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;margin-bottom:6px}
+.module-desc{font-size:12px;color:var(--muted);line-height:1.55}
+.mc-app{background:#fff;border-color:rgba(29,158,117,.3)}.mc-app .module-name{color:var(--green-dark)}
+.mc-ui{background:var(--blue-light);border-color:rgba(66,133,244,.2)}.mc-ui .module-name{color:var(--blue-dark)}
+.mc-domain{background:var(--purple-light);border-color:rgba(127,119,221,.2)}.mc-domain .module-name{color:var(--purple-dark)}
+.mc-data{background:var(--amber-light);border-color:rgba(186,117,23,.2)}.mc-data .module-name{color:var(--amber-dark)}
+.mc-db{background:#f5f5f0;border-color:var(--border-strong)}.mc-db .module-name{color:#3a3a36}
+.mc-res{background:#fdf4ff;border-color:rgba(168,85,247,.2)}.mc-res .module-name{color:#581c87}
+.mc-infra{background:#f0fdf4;border-color:rgba(29,158,117,.15)}.mc-infra .module-name{color:var(--green-mid)}
+
+/* ── ARCH DIAGRAM ── */
+.arch-diagram{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:36px 32px;overflow-x:auto}
+.arch-row{display:flex;justify-content:center;gap:12px;margin-bottom:0}
+.arch-node{border-radius:var(--radius-sm);padding:12px 18px;text-align:center;min-width:130px}
+.arch-node .node-title{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.arch-node .node-sub{font-size:11px;margin-top:2px}
+.an-app{background:var(--green-light);border:1.5px solid rgba(29,158,117,.3)}.an-app .node-title{color:var(--green-dark)}.an-app .node-sub{color:var(--green-mid)}
+.an-ui{background:var(--blue-light);border:1.5px solid rgba(66,133,244,.25)}.an-ui .node-title{color:var(--blue-dark)}.an-ui .node-sub{color:#3a5ea0}
+.an-data{background:var(--amber-light);border:1.5px solid rgba(186,117,23,.25)}.an-data .node-title{color:var(--amber-dark)}.an-data .node-sub{color:#854F0B}
+.an-domain{background:var(--purple-light);border:1.5px solid rgba(127,119,221,.25)}.an-domain .node-title{color:var(--purple-dark)}.an-domain .node-sub{color:#3C3489}
+.an-db{background:#f5f5f0;border:1.5px solid rgba(0,0,0,.12)}.an-db .node-title{color:#2C2C2A}.an-db .node-sub{color:var(--muted)}
+.an-res{background:#fdf4ff;border:1.5px solid rgba(168,85,247,.2)}.an-res .node-title{color:#581c87}.an-res .node-sub{color:#7e22ce}
+.arch-arrows{display:flex;justify-content:center;gap:12px;padding:6px 0}
+.arch-arrow-down{text-align:center;font-size:16px;color:var(--muted-light);min-width:130px}
+.arch-arrow-side{display:flex;align-items:center;justify-content:center;gap:4px;min-width:40px;color:var(--muted-light);font-size:12px}
+.arch-connector{display:flex;flex-direction:column;align-items:center;gap:2px}
+.arch-line-v{width:2px;height:20px;background:var(--border-strong);margin:0 auto}
+.arch-line-h{height:2px;background:var(--border-strong);flex:1}
+.arch-t-row{display:flex;align-items:center;justify-content:center;width:100%;max-width:400px;margin:0 auto}
+.arch-note{text-align:center;font-size:12px;color:var(--muted-light);margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+
+/* ── FLOW DIAGRAMS ── */
+.flow-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;overflow-x:auto}
+.flow-section-title{font-size:11px;font-weight:600;color:var(--muted-light);letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px}
+.vflow{display:flex;flex-direction:column;align-items:center;gap:0}
+.vflow-node{width:100%;max-width:440px;background:var(--bg);border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:12px 18px;text-align:center}
+.vflow-node .node-title{font-size:13px;font-weight:600;margin-bottom:2px}
+.vflow-node .node-sub{font-size:11px;color:var(--muted)}
+.vflow-node.green{background:var(--green-light);border-color:rgba(29,158,117,.25)}.vflow-node.green .node-title{color:var(--green-dark)}.vflow-node.green .node-sub{color:var(--green-mid)}
+.vflow-node.blue{background:var(--blue-light);border-color:rgba(66,133,244,.25)}.vflow-node.blue .node-title{color:var(--blue-dark)}.vflow-node.blue .node-sub{color:#3a5ea0}
+.vflow-node.purple{background:var(--purple-light);border-color:rgba(127,119,221,.25)}.vflow-node.purple .node-title{color:var(--purple-dark)}.vflow-node.purple .node-sub{color:#3C3489}
+.vflow-node.amber{background:var(--amber-light);border-color:rgba(186,117,23,.25)}.vflow-node.amber .node-title{color:var(--amber-dark)}.vflow-node.amber .node-sub{color:#854F0B}
+.vflow-arrow{width:2px;height:24px;background:var(--border-strong);margin:0 auto;position:relative}
+.vflow-arrow::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top:7px solid rgba(0,0,0,.15)}
+.parallel-wrap{width:100%;max-width:440px;margin:0 auto}
+.parallel-connector{display:flex;align-items:flex-start;gap:0}
+.parallel-left-line{width:50%;border-top:2px solid rgba(0,0,0,.12);border-left:2px solid rgba(0,0,0,.12);height:20px;border-top-left-radius:4px}
+.parallel-right-line{width:50%;border-top:2px solid rgba(0,0,0,.12);border-right:2px solid rgba(0,0,0,.12);height:20px;border-top-right-radius:4px}
+.parallel-nodes{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:440px;margin:0 auto}
+.parallel-node{border-radius:var(--radius-sm);padding:11px 14px;text-align:center}
+.parallel-node .node-title{font-size:12px;font-weight:600;margin-bottom:2px}
+.parallel-node .node-sub{font-size:11px}
+.pnode-gemini{background:var(--blue-light);border:1.5px solid rgba(66,133,244,.3)}.pnode-gemini .node-title{color:var(--blue-dark)}.pnode-gemini .node-sub{color:#3a5ea0}
+.pnode-claude{background:var(--green-light);border:1.5px solid rgba(29,158,117,.3)}.pnode-claude .node-title{color:var(--green-dark)}.pnode-claude .node-sub{color:var(--green-mid)}
+.parallel-merge{display:flex;align-items:flex-end;gap:0}
+.parallel-merge-left{width:50%;border-bottom:2px solid rgba(0,0,0,.12);border-left:2px solid rgba(0,0,0,.12);height:20px;border-bottom-left-radius:4px}
+.parallel-merge-right{width:50%;border-bottom:2px solid rgba(0,0,0,.12);border-right:2px solid rgba(0,0,0,.12);height:20px;border-bottom-right-radius:4px}
+
+/* ── SERVER ARCH ── */
+.server-flow{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.server-flow-col{padding:28px 24px}
+.server-flow-divider{background:var(--border)}
+.server-flow-col h4{font-size:11px;font-weight:600;color:var(--muted-light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px}
+.sflow-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+.sflow-num{width:24px;height:24px;border-radius:50%;background:var(--green-light);color:var(--green-dark);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.sflow-text strong{font-size:13px;font-weight:600;display:block;margin-bottom:2px}
+.sflow-text span{font-size:12px;color:var(--muted)}
+@media(max-width:600px){.server-flow{grid-template-columns:1fr};.server-flow-divider{height:1px;width:100%}}
+
+/* ── ARCH LAYER CHIPS ── */
+.arch-layers{display:flex;flex-direction:column;gap:12px}
+.arch-layer{border-radius:var(--radius-sm);padding:18px 20px;border:1px solid var(--border)}
+.arch-layer-title{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-light);margin-bottom:10px}
+.arch-layer-items{display:flex;flex-wrap:wrap;gap:8px}
+.arch-chip{padding:5px 12px;border-radius:100px;font-size:12px;font-weight:500;font-family:'JetBrains Mono',monospace}
+.layer-ui{background:#f5f8ff;border-color:rgba(66,133,244,.18)}
+.chip-ui{background:var(--blue-light);color:var(--blue-dark);border:1px solid rgba(66,133,244,.2)}
+.layer-domain{background:#f0f0fe;border-color:rgba(127,119,221,.2)}
+.chip-domain{background:var(--purple-light);color:var(--purple-dark);border:1px solid rgba(127,119,221,.2)}
+.layer-data{background:#fffbf0;border-color:rgba(186,117,23,.18)}
+.chip-data{background:var(--amber-light);color:var(--amber-dark);border:1px solid rgba(186,117,23,.2)}
+.layer-db{background:#f5f5f0;border-color:var(--border-strong)}
+.chip-db{background:#e8e8e0;color:#2C2C2A;border:1px solid rgba(0,0,0,.1)}
+.layer-infra{background:#f0f9f5;border-color:rgba(29,158,117,.15)}
+.chip-infra{background:var(--green-light);color:var(--green-dark);border:1px solid rgba(29,158,117,.2)}
+.layer-remote{background:#fff8f5;border-color:rgba(230,120,60,.18)}
+.chip-remote{background:#fef0e8;color:#7a3a15;border:1px solid rgba(200,100,40,.2)}
+
+/* ── ENDPOINT TABLE ── */
+.endpoint-list{display:flex;flex-direction:column;gap:12px}
+.endpoint{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 20px;display:flex;align-items:flex-start;gap:14px}
+.method{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:3px 9px;border-radius:5px;flex-shrink:0;margin-top:2px}
+.method.post{background:#e6f4ea;color:#1e6635}
+.method.get{background:#e8f0fe;color:#1a3a6e}
+.endpoint-path{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;margin-bottom:3px}
+.endpoint-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.endpoint-params{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.param-chip{font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);border:1px solid var(--border-strong);border-radius:4px;padding:2px 8px;color:var(--muted)}
+
+/* ── SCHEMA ── */
+.schema-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.schema-title{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace;color:var(--green-dark);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.schema-row{display:grid;grid-template-columns:180px 90px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);align-items:baseline}
+.schema-row:last-child{border-bottom:none}
+.sf-name{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--text)}
+.sf-type{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue-dark);background:var(--blue-light);padding:2px 7px;border-radius:4px;width:fit-content}
+.sf-desc{font-size:12px;color:var(--muted)}
+@media(max-width:600px){.schema-row{grid-template-columns:1fr 1fr};.sf-desc{grid-column:1/-1}}
+
+/* ── TECH STACK ── */
+.stack-section{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+@media(max-width:680px){.stack-section{grid-template-columns:1fr}}
+.stack-group-list{display:flex;flex-direction:column;gap:20px}
+.stack-group h4{font-size:11px;font-weight:600;color:var(--muted-light);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{display:inline-block;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:500;background:var(--bg);border:1px solid var(--border-strong);color:var(--text);font-family:'JetBrains Mono',monospace}
+.tag.green{background:var(--green-light);border-color:rgba(29,158,117,.2);color:var(--green-dark)}
+.tag.blue{background:var(--blue-light);border-color:rgba(66,133,244,.2);color:var(--blue-dark)}
+.tag.purple{background:var(--purple-light);border-color:rgba(127,119,221,.2);color:var(--purple-dark)}
+.tag.amber{background:var(--amber-light);border-color:rgba(186,117,23,.2);color:var(--amber-dark)}
+
+/* ── CONVENTION ── */
+.conv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.conv-grid{grid-template-columns:1fr}}
+.conv-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px}
+.conv-card h4{font-size:13px;font-weight:600;margin-bottom:10px}
+.conv-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.conv-list li{font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.conv-list li::before{content:'';flex-shrink:0;margin-top:6px}
+.conv-list.no li::before{content:'✕';color:#E24B4A;font-size:11px;font-weight:700;margin-top:0}
+.conv-list.yes li::before{content:'✓';color:var(--green);font-size:11px;font-weight:700;margin-top:0}
+code.inline{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--bg);border:1px solid var(--border-strong);padding:1px 6px;border-radius:4px;color:var(--text)}
+
+/* ── AI COMPARE ── */
+.compare-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+.compare-desc{font-size:13px;color:var(--muted);margin-bottom:20px}
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:540px){.compare-row{grid-template-columns:1fr}}
+.ai-result{border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);padding:16px}
+.ai-result.selected-gemini{border-color:#4285F4;background:rgba(66,133,244,.03)}
+.ai-result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ai-label{font-size:12px;font-weight:600}
+.ai-label.g{color:#4285F4}.ai-label.c{color:var(--green)}
+.ai-kcal{font-size:15px;font-weight:600}
+.ai-food{font-size:13px;font-weight:500;margin-bottom:2px}
+.ai-portion{font-size:11px;color:var(--muted);margin-bottom:8px}
+.macros{display:flex;gap:10px;font-size:11px;font-family:'JetBrains Mono',monospace}
+.mc{color:#E67E22}.mp{color:#3498DB}.mf{color:#E74C3C}
+.confidence-row{display:flex;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.conf-label{font-size:10px;color:var(--muted-light)}
+.conf-bar{flex:1;height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
+.conf-fill{height:100%;border-radius:2px}
+.conf-fill.g{background:#4285F4}.conf-fill.c{background:var(--green)}
+.conf-pct{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted)}
+
+/* ── DEPLOY ── */
+.deploy-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:560px){.deploy-card{grid-template-columns:1fr}}
+.deploy-item strong{font-size:13px;font-weight:600;display:block;margin-bottom:4px}
+.deploy-item span{font-size:13px;color:var(--muted)}
+.deploy-url{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--bg);padding:6px 10px;border-radius:5px;border:1px solid var(--border);display:inline-block;margin-top:4px;color:var(--green-dark);word-break:break-all}
+
+footer{background:var(--white);border-top:1px solid var(--border);padding:40px 24px;text-align:center;font-size:13px;color:var(--muted)}
+footer a{color:var(--green);text-decoration:none}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><span class="dot"></span>Side Project · 2025–2026</div>
+  <h1>AI Nutrition<br><span class="accent">Tracker</span></h1>
+  <p class="hero-sub">음식 사진 한 장으로 칼로리와 영양소를 분석하는<br>Android 앱 + FastAPI AI 백엔드</p>
+  <p class="hero-desc">Jetpack Compose · Clean Architecture · Multi-Module Android 앱과<br>Gemini · Claude를 asyncio.gather로 병렬 호출하는 FastAPI 서버</p>
+  <div class="hero-links">
+    <a href="https://github.com/idKimjunseok/KcalSearch" class="btn btn-primary" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.37.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      Android App
+    </a>
+    <a href="https://github.com/idKimjunseok/ai-nutrition-server" class="btn btn-outline" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.37.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      AI Server
+    </a>
+    <a href="https://ai-nutrition-server-production-618a.up.railway.app/docs" class="btn btn-blue" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Live API Docs
+    </a>
+  </div>
+</div>
+
+<!-- TOC -->
+<nav class="toc">
+  <div class="toc-inner">
+    <a class="toc-link active" href="#screens">화면</a>
+    <a class="toc-link" href="#android-features">앱 기능</a>
+    <a class="toc-link" href="#android-arch">앱 아키텍처</a>
+    <a class="toc-link" href="#android-modules">멀티모듈</a>
+    <a class="toc-link" href="#android-flow">앱 흐름도</a>
+    <a class="toc-link" href="#android-convention">코드 컨벤션</a>
+    <a class="toc-link" href="#server-features">서버 기능</a>
+    <a class="toc-link" href="#server-arch">서버 아키텍처</a>
+    <a class="toc-link" href="#server-flow">서버 흐름도</a>
+    <a class="toc-link" href="#api">API</a>
+    <a class="toc-link" href="#schema">데이터 모델</a>
+    <a class="toc-link" href="#stack">기술 스택</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ══════════════════════ SCREENS ══════════════════════ -->
+<section id="screens">
+  <div class="section-header">
+    <p class="section-label">Android App</p>
+    <h2 class="section-title">앱 화면</h2>
+    <p class="section-desc">Jetpack Compose + Material 3로 구현한 홈 대시보드, 끼니별 기록, 주간 통계, AI 분석 결과 비교 화면입니다.</p>
+  </div>
+  <div class="screens-grid">
+    <div class="screen-card">
+      <img src="Screenshot_20260621_163046.png" alt="홈 화면">
+      <div class="screen-label">🏠 홈 — 섭취량 · 도넛 차트</div>
+    </div>
+    <div class="screen-card">
+      <img src="Screenshot_20260621_163422.png" alt="기록 화면">
+      <div class="screen-label">📋 Record — 끼니별 식단</div>
+    </div>
+    <div class="screen-card">
+      <img src="Screenshot_20260621_163440.png" alt="통계 화면">
+      <div class="screen-label">📊 Stats — 주간 칼로리 그래프</div>
+    </div>
+    <div class="screen-card">
+      <img src="Screenshot_20260621_163538.png" alt="AI 분석 화면">
+      <div class="screen-label">🤖 Measure — AI 분석 비교</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ ANDROID FEATURES ══════════════════════ -->
+<section id="android-features">
+  <div class="section-header">
+    <p class="section-label">Android App</p>
+    <h2 class="section-title">앱 주요 기능</h2>
+    <p class="section-desc">5개 영역의 핵심 기능을 Compose 화면 단위로 구현했습니다.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <h3>AI 음식 분석 (Measure)</h3>
+      <p>측정 버튼 탭 시 BottomSheet에서 사진 촬영(CameraX) · 갤러리 · 텍스트 검색을 선택합니다. 선택한 입력을 AI 백엔드로 전송해 Gemini · Claude 결과를 동시에 받아 비교 화면에 표시합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <h3>끼니별 식단 기록 (Record)</h3>
+      <p>아침 · 점심 · 저녁 · 간식으로 자동 분류하여 날짜별로 저장합니다. 분석에 사용한 음식 이미지를 함께 보관하며 날짜별 영양소를 합산해 표시합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>칼로리 통계 (Stats)</h3>
+      <p>주 / 월 / 3개월 / 년 단위 칼로리 그래프와 권장 칼로리 대비 점선을 표시합니다. 선택한 기간의 일 평균 · 총 칼로리 · 기록일 수를 요약합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <h3>프로필 · 권장 칼로리</h3>
+      <p>나이 · 성별 · 키 · 몸무게를 입력하면 서버 Harris–Benedict 공식으로 개인 권장 칼로리를 산출합니다. 서버 호출은 fire-and-forget으로 처리합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>홈 대시보드 (Home)</h3>
+      <p>오늘의 섭취/잔여 칼로리를 도넛 차트로 시각화하고, 단백질 · 탄수화물 · 지방 영양소 바와 주간 식단 현황을 한 화면에서 확인합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M8.46 8.46a5 5 0 0 0 0 7.07"/></svg>
+      </div>
+      <h3>다국어 · 로케일 대응</h3>
+      <p>한국어(values-ko) · 영어(values) 리소스를 분리 관리하며, OkHttp 인터셉터로 모든 요청에 디바이스 로케일 기반 <code class="inline">Accept-Language</code> 헤더를 자동 첨부합니다.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ ANDROID ARCH ══════════════════════ -->
+<section id="android-arch">
+  <div class="section-header">
+    <p class="section-label">Android App</p>
+    <h2 class="section-title">앱 아키텍처</h2>
+    <p class="section-desc">Clean Architecture + Multi-Module 구조. 의존성은 단방향(ui → domain ← data)이며, domain 모듈은 순수 Kotlin으로 Android 프레임워크에 의존하지 않습니다.</p>
+  </div>
+
+  <div class="arch-diagram">
+    <!-- app -->
+    <div style="display:flex;justify-content:center;margin-bottom:0">
+      <div class="arch-node an-app" style="min-width:200px">
+        <div class="node-title">:app</div>
+        <div class="node-sub">Application · Activity · Hilt 조립</div>
+      </div>
+    </div>
+    <!-- arrow down from app -->
+    <div style="display:flex;justify-content:center;padding:4px 0">
+      <div style="width:2px;height:20px;background:var(--border-strong)"></div>
+    </div>
+    <!-- ui + data row -->
+    <div style="display:flex;justify-content:center;gap:60px;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="arch-node an-ui">
+          <div class="node-title">:kcalSearch-ui</div>
+          <div class="node-sub">Compose Screen · ViewModel</div>
+        </div>
+        <div style="width:2px;height:20px;background:var(--border-strong)"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="arch-node an-data">
+          <div class="node-title">:kcalSearch-data</div>
+          <div class="node-sub">Repository Impl · Retrofit · DTO</div>
+        </div>
+        <div style="width:2px;height:20px;background:var(--border-strong)"></div>
+      </div>
+    </div>
+    <!-- domain -->
+    <div style="position:relative;display:flex;justify-content:center;align-items:flex-start">
+      <!-- horizontal bridge line -->
+      <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:200px;height:2px;background:var(--border-strong)"></div>
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div style="width:2px;height:0"></div>
+        <div class="arch-node an-domain" style="margin-top:0">
+          <div class="node-title">:kcalSearch-domain</div>
+          <div class="node-sub">UseCase · Repository Interface<br><span style="font-size:10px;font-style:italic">순수 Kotlin — Android 의존 없음</span></div>
+        </div>
+        <div style="width:2px;height:20px;background:var(--border-strong)"></div>
+      </div>
+    </div>
+    <!-- db -->
+    <div style="display:flex;justify-content:center;margin-bottom:0">
+      <div class="arch-node an-db">
+        <div class="node-title">:kcalSearch-database</div>
+        <div class="node-sub">Room Entity · DAO · Migration</div>
+      </div>
+    </div>
+    <!-- resources (leaf) -->
+    <div style="margin-top:20px;padding-top:16px;border-top:1px dashed var(--border-strong);display:flex;justify-content:center">
+      <div class="arch-node an-res" style="min-width:320px">
+        <div class="node-title">:kcalSearch-resources</div>
+        <div class="node-sub">strings · drawable · colors · themes — UI/app 모두 의존 (leaf 모듈, 빌드 격리)</div>
+      </div>
+    </div>
+    <div class="arch-note">의존 방향: ui → domain ← data / database → domain / app → 전체</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ MULTI-MODULE ══════════════════════ -->
+<section id="android-modules">
+  <div class="section-header">
+    <p class="section-label">Android App</p>
+    <h2 class="section-title">멀티모듈 구성</h2>
+    <p class="section-desc">기능과 인프라를 독립 모듈로 분리해 빌드 속도와 관심사 분리를 개선했습니다.</p>
+  </div>
+  <div class="module-grid">
+    <div class="module-card mc-app">
+      <div class="module-name">:app</div>
+      <div class="module-desc">Application 진입점, MainActivity, Hilt 컴포넌트 조립. 모든 모듈을 연결하는 루트 모듈.</div>
+    </div>
+    <div class="module-card mc-ui">
+      <div class="module-name">:kcalSearch-ui</div>
+      <div class="module-desc">Compose 화면(HomeScreen · RecordScreen · MeasureScreen · StatsScreen), ViewModel, UI 상태 관리.</div>
+    </div>
+    <div class="module-card mc-domain">
+      <div class="module-name">:kcalSearch-domain</div>
+      <div class="module-desc">도메인 모델, Repository 인터페이스, UseCase. 순수 Kotlin — Android 프레임워크 의존 없음.</div>
+    </div>
+    <div class="module-card mc-data">
+      <div class="module-name">:kcalSearch-data</div>
+      <div class="module-desc">Repository 구현, Retrofit API 인터페이스, DTO, Mapper. consumer-rules.pro로 R8 난독화 보존.</div>
+    </div>
+    <div class="module-card mc-db">
+      <div class="module-name">:kcalSearch-database</div>
+      <div class="module-desc">Room Entity · DAO · Database · Migration. KSP로 컴파일 타임 생성.</div>
+    </div>
+    <div class="module-card mc-res">
+      <div class="module-name">:kcalSearch-resources</div>
+      <div class="module-desc">strings(ko/en) · drawable · color · mipmap · themes. 수정 시 ui 모듈 재컴파일 없이 격리.</div>
+    </div>
+    <div class="module-card mc-infra">
+      <div class="module-name">:camera</div>
+      <div class="module-desc">CameraX 기반 in-app 촬영 · 미리보기 모듈. 시스템 카메라 Intent 대신 앱 내 완전 제어.</div>
+    </div>
+    <div class="module-card mc-infra">
+      <div class="module-name">:retrofit / :gson</div>
+      <div class="module-desc">Retrofit + OkHttp 네트워크 인프라. Accept-Language 인터셉터, API Key 헤더 자동 첨부.</div>
+    </div>
+    <div class="module-card mc-infra">
+      <div class="module-name">:api-call-adapter / :common-error</div>
+      <div class="module-desc">Retrofit Call Adapter 커스텀 구현, 공통 에러 모델 정의.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ ANDROID FLOW ══════════════════════ -->
+<section id="android-flow">
+  <div class="section-header">
+    <p class="section-label">Android App</p>
+    <h2 class="section-title">앱 흐름도</h2>
+    <p class="section-desc">음식 측정부터 저장까지의 핵심 데이터 흐름과 홈/통계 조회 흐름입니다.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+
+    <!-- 측정 흐름 -->
+    <div class="flow-wrap">
+      <div class="flow-section-title">음식 분석 · 저장 흐름</div>
+      <div class="vflow">
+        <div class="vflow-node green">
+          <div class="node-title">측정 버튼 탭</div>
+          <div class="node-sub">MeasureOptionsSheet (BottomSheet)</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="parallel-wrap">
+          <div class="parallel-connector">
+            <div class="parallel-left-line"></div>
+            <div class="parallel-right-line"></div>
+          </div>
+          <div class="parallel-nodes">
+            <div class="parallel-node pnode-gemini" style="font-size:11px">
+              <div class="node-title" style="font-size:11px">📷 사진촬영</div>
+              <div class="node-sub">CameraX</div>
+            </div>
+            <div class="parallel-node" style="background:var(--purple-light);border:1.5px solid rgba(127,119,221,.3)">
+              <div class="node-title" style="font-size:11px;color:var(--purple-dark)">🖼 갤러리</div>
+              <div class="node-sub" style="color:#3C3489;font-size:11px">시스템 Picker</div>
+            </div>
+          </div>
+          <div class="parallel-merge">
+            <div class="parallel-merge-left"></div>
+            <div class="parallel-merge-right"></div>
+          </div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node blue">
+          <div class="node-title">MeasureScreen</div>
+          <div class="node-sub">URI / textMode 수신</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node purple">
+          <div class="node-title">MeasureViewModel</div>
+          <div class="node-sub">AnalyzeFoodUseCase 호출</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node amber">
+          <div class="node-title">NutritionRepositoryImpl</div>
+          <div class="node-sub">KcalSearchApi (Retrofit) → AI 백엔드</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="parallel-wrap">
+          <div class="parallel-connector">
+            <div class="parallel-left-line"></div>
+            <div class="parallel-right-line"></div>
+          </div>
+          <div class="parallel-nodes">
+            <div class="parallel-node pnode-gemini">
+              <div class="node-title">Gemini 분석</div>
+              <div class="node-sub">geminiItems</div>
+            </div>
+            <div class="parallel-node pnode-claude">
+              <div class="node-title">Claude 분석</div>
+              <div class="node-sub">claudeItems</div>
+            </div>
+          </div>
+          <div class="parallel-merge">
+            <div class="parallel-merge-left"></div>
+            <div class="parallel-merge-right"></div>
+          </div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node">
+          <div class="node-title">DTO → toDomain() → CalorieResult</div>
+          <div class="node-sub">StateFlow&lt;UiState&gt; 갱신</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node blue">
+          <div class="node-title">결과 비교 화면</div>
+          <div class="node-sub">Gemini / Claude 중 사용자 선택</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node green">
+          <div class="node-title">Room DB 저장</div>
+          <div class="node-sub">끼니 선택 → MealEntity insert</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 홈/통계 흐름 -->
+    <div class="flow-wrap">
+      <div class="flow-section-title">홈 · 통계 조회 흐름</div>
+      <div class="vflow">
+        <div class="vflow-node green">
+          <div class="node-title">앱 실행 → HomeScreen</div>
+          <div class="node-sub">Compose Navigation</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node purple">
+          <div class="node-title">HomeViewModel</div>
+          <div class="node-sub">GetDailyStatsUseCase 호출</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node amber">
+          <div class="node-title">MealDao.getMealsByDate()</div>
+          <div class="node-sub">Room DB 오늘 날짜 쿼리</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node blue">
+          <div class="node-title">홈 UI 갱신</div>
+          <div class="node-sub">도넛 차트 · 영양소 바 · 식단 목록</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node green">
+          <div class="node-title">Stats 탭 진입</div>
+          <div class="node-sub">주/월/3개월/년 탭 선택</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node purple">
+          <div class="node-title">StatsViewModel</div>
+          <div class="node-sub">GetWeeklyStatsUseCase</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node amber">
+          <div class="node-title">Room DB 기간 집계</div>
+          <div class="node-sub">날짜 범위 쿼리 · 칼로리 합산</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node blue">
+          <div class="node-title">통계 그래프 표시</div>
+          <div class="node-sub">권장 칼로리 점선 오버레이</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AI 비교 결과 UX -->
+  <div style="margin-top:28px">
+    <div class="flow-section-title" style="margin-bottom:16px">AI 결과 비교 선택 — 짬뽕 분석 예시</div>
+    <div class="compare-card">
+      <p class="compare-desc">동일한 이미지를 두 AI가 독립 분석합니다. 사용자가 신뢰도와 분량 설명을 보고 원하는 값을 선택해 기록합니다.</p>
+      <div class="compare-row">
+        <div class="ai-result selected-gemini">
+          <div class="ai-result-header">
+            <span class="ai-label g">✦ Gemini 2.5 Flash</span>
+            <span class="ai-kcal">780 kcal</span>
+          </div>
+          <div class="ai-food">Jjamppong</div>
+          <div class="ai-portion">1 large bowl (approximately 750g)</div>
+          <div class="macros"><span class="mc">C 110g</span><span class="mp">P 45g</span><span class="mf">F 35g</span></div>
+          <div class="confidence-row">
+            <span class="conf-label">신뢰도</span>
+            <div class="conf-bar"><div class="conf-fill g" style="width:92%"></div></div>
+            <span class="conf-pct">0.92</span>
+          </div>
+        </div>
+        <div class="ai-result">
+          <div class="ai-result-header">
+            <span class="ai-label c">◉ Claude Sonnet 4.6</span>
+            <span class="ai-kcal">520 kcal</span>
+          </div>
+          <div class="ai-food">Korean Spicy Noodle Soup (Jjamppong)</div>
+          <div class="ai-portion">1 large bowl approximately 600–700g</div>
+          <div class="macros"><span class="mc">C 65g</span><span class="mp">P 28g</span><span class="mf">F 14g</span></div>
+          <div class="confidence-row">
+            <span class="conf-label">신뢰도</span>
+            <div class="conf-bar"><div class="conf-fill c" style="width:88%"></div></div>
+            <span class="conf-pct">0.88</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ CONVENTION ══════════════════════ -->
+<section id="android-convention">
+  <div class="section-header">
+    <p class="section-label">Android App</p>
+    <h2 class="section-title">코드 컨벤션</h2>
+    <p class="section-desc">CLAUDE.md에 정의된 팀 규칙. ktlint · .editorconfig 기반 자동 적용 (4 spaces, max 100 chars).</p>
+  </div>
+  <div class="conv-grid">
+    <div class="conv-card">
+      <h4 style="color:#A32D2D">금지 사항</h4>
+      <ul class="conv-list no">
+        <li><code class="inline">!!</code> not-null assertion 사용</li>
+        <li><code class="inline">LiveData</code> 사용 (Flow로 대체)</li>
+        <li><code class="inline">GlobalScope</code> 코루틴</li>
+        <li><code class="inline">findViewById</code> · XML 레이아웃</li>
+        <li>와일드카드 import (<code class="inline">import com.example.*</code>)</li>
+      </ul>
+    </div>
+    <div class="conv-card">
+      <h4 style="color:var(--green-dark)">필수 사항</h4>
+      <ul class="conv-list yes">
+        <li>Trailing comma 사용</li>
+        <li><code class="inline">kotlinx.collections.immutable.ImmutableList</code> 사용</li>
+        <li><code class="inline">derivedStateOf</code> · <code class="inline">remember</code>로 성능 최적화</li>
+        <li>Composable은 <code class="inline">modifier: Modifier = Modifier</code>를 첫 optional 인자로</li>
+        <li>State Hoisting 패턴 준수</li>
+      </ul>
+    </div>
+    <div class="conv-card">
+      <h4>Coroutine / Flow 4대 점검</h4>
+      <ul class="conv-list yes">
+        <li>메모리 블로트 방지</li>
+        <li>생명주기 안전 보장</li>
+        <li>Context 누수 없음</li>
+        <li>모듈 간 의존성 위반 없음</li>
+      </ul>
+    </div>
+    <div class="conv-card">
+      <h4>릴리즈 빌드</h4>
+      <ul class="conv-list yes">
+        <li>R8 minify + resource shrinking 활성화</li>
+        <li>Firebase Crashlytics 연동 (CrashlyticsTree)</li>
+        <li><code class="inline">network_security_config.xml</code>으로 cleartext 차단</li>
+        <li>DTO 필드 <code class="inline">@SerializedName</code>으로 난독화 보존</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ SERVER FEATURES ══════════════════════ -->
+<section id="server-features">
+  <div class="section-header">
+    <p class="section-label">FastAPI Server</p>
+    <h2 class="section-title">서버 주요 기능</h2>
+    <p class="section-desc">음식 이미지·텍스트를 입력받아 Gemini와 Claude를 asyncio.gather로 병렬 호출하고 통합 응답을 반환합니다.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>두 AI 병렬 호출</h3>
+      <p><code class="inline">asyncio.gather()</code>로 Gemini와 Claude를 동시에 호출해 응답 시간을 최소화합니다. 한쪽이 실패해도 나머지 AI 결과만으로 응답합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>
+      </div>
+      <h3>다중 입력 지원</h3>
+      <p>JPEG · PNG · HEIC 이미지 업로드와 텍스트 쿼리 두 가지 입력 방식을 지원합니다. HEIC는 <code class="inline">pillow-heif</code>로 자동 변환합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3>API Key 인증 + Rate Limit</h3>
+      <p><code class="inline">X-API-Key</code> 헤더 인증과 IP당 분당 20회 Rate Limiting. <code class="inline">API_KEY</code> 미설정 시 로컬 개발 모드로 인증을 건너뜁니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3>다국어 응답</h3>
+      <p><code class="inline">Accept-Language</code> 헤더로 한국어/영어 AI 프롬프트를 분기합니다. 헤더 미전송 시 기본값은 한국어입니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>Pydantic v2 직렬화</h3>
+      <p>응답 모델을 camelCase alias로 정의해 Android Gson과 <code class="inline">@SerializedName</code> 없이 1:1 파싱 가능합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      </div>
+      <h3>Railway 자동 배포</h3>
+      <p>main 브랜치 push 시 Railway가 GitHub 연동으로 자동 빌드·배포합니다. Swagger UI(<code class="inline">/docs</code>)가 포함됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ SERVER ARCH ══════════════════════ -->
+<section id="server-arch">
+  <div class="section-header">
+    <p class="section-label">FastAPI Server</p>
+    <h2 class="section-title">서버 아키텍처</h2>
+    <p class="section-desc">역할에 따라 api / core / models / services / utils 레이어를 분리한 구조입니다.</p>
+  </div>
+
+  <div class="server-flow">
+    <div class="server-flow-col">
+      <h4>디렉터리 구조</h4>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;color:var(--text)">
+        <div style="color:var(--green-dark);font-weight:600">ai-nutrition-server/</div>
+        <div style="padding-left:12px">├── <span style="font-weight:600">main.py</span> <span style="color:var(--muted-light)">— FastAPI 진입점</span></div>
+        <div style="padding-left:12px">└── app/</div>
+        <div style="padding-left:28px">├── <span style="color:var(--blue-dark);font-weight:600">api/</span></div>
+        <div style="padding-left:44px">└── endpoints.py <span style="color:var(--muted-light)">— 라우터 (4개)</span></div>
+        <div style="padding-left:28px">├── <span style="color:var(--green);font-weight:600">core/</span></div>
+        <div style="padding-left:44px">└── config.py <span style="color:var(--muted-light)">— 환경변수</span></div>
+        <div style="padding-left:28px">├── <span style="color:var(--amber-dark);font-weight:600">models/</span></div>
+        <div style="padding-left:44px">└── schemas.py <span style="color:var(--muted-light)">— Pydantic 모델</span></div>
+        <div style="padding-left:28px">├── <span style="color:var(--green);font-weight:600">services/</span></div>
+        <div style="padding-left:44px">└── nutrition_service.py</div>
+        <div style="padding-left:44px"><span style="color:var(--muted-light)">— AI 병렬 호출 로직</span></div>
+        <div style="padding-left:28px">└── <span style="color:var(--purple);font-weight:600">utils/</span></div>
+        <div style="padding-left:44px">└── image_utils.py</div>
+        <div style="padding-left:44px"><span style="color:var(--muted-light)">— HEIC→JPEG 변환</span></div>
+      </div>
+    </div>
+    <div class="server-flow-divider"></div>
+    <div class="server-flow-col">
+      <h4>각 레이어 역할</h4>
+      <div class="sflow-item">
+        <div class="sflow-num" style="background:var(--blue-light);color:var(--blue-dark)">api</div>
+        <div class="sflow-text">
+          <strong>endpoints.py</strong>
+          <span>HTTP 라우팅, X-API-Key 인증, Rate Limit 체크, Accept-Language 파싱. 비즈니스 로직 없이 service에 위임.</span>
+        </div>
+      </div>
+      <div class="sflow-item">
+        <div class="sflow-num" style="background:var(--green-light);color:var(--green-dark)">co</div>
+        <div class="sflow-text">
+          <strong>config.py</strong>
+          <span>pydantic-settings로 .env의 API 키·모델 ID·커스텀 프롬프트를 로드하는 Settings 싱글턴.</span>
+        </div>
+      </div>
+      <div class="sflow-item">
+        <div class="sflow-num" style="background:var(--amber-light);color:var(--amber-dark)">mo</div>
+        <div class="sflow-text">
+          <strong>schemas.py</strong>
+          <span>Pydantic v2 응답 모델. camelCase alias로 Android Gson과 @SerializedName 없이 호환.</span>
+        </div>
+      </div>
+      <div class="sflow-item">
+        <div class="sflow-num">sv</div>
+        <div class="sflow-text">
+          <strong>nutrition_service.py</strong>
+          <span>asyncio.gather()로 Gemini·Claude 동시 호출. 각 응답을 DetectedFoodItem으로 파싱 후 CalorieResult에 통합.</span>
+        </div>
+      </div>
+      <div class="sflow-item">
+        <div class="sflow-num" style="background:var(--purple-light);color:var(--purple-dark)">ut</div>
+        <div class="sflow-text">
+          <strong>image_utils.py</strong>
+          <span>pillow-heif로 HEIC→JPEG 변환, base64 인코딩 후 AI API 전달 형태로 전처리.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ SERVER FLOW ══════════════════════ -->
+<section id="server-flow">
+  <div class="section-header">
+    <p class="section-label">FastAPI Server</p>
+    <h2 class="section-title">서버 요청 흐름도</h2>
+    <p class="section-desc">Android 요청이 서버 내부를 거쳐 두 AI로 분기되고 응답으로 돌아오는 전체 흐름입니다.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="flow-wrap">
+      <div class="flow-section-title">POST /v1/analyze-food (이미지)</div>
+      <div class="vflow">
+        <div class="vflow-node blue">
+          <div class="node-title">📱 Android 요청</div>
+          <div class="node-sub">multipart/form-data + X-API-Key</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node">
+          <div class="node-title">인증 미들웨어</div>
+          <div class="node-sub">X-API-Key 검증 / Rate Limit (20회/분)</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node">
+          <div class="node-title">image_utils.py</div>
+          <div class="node-sub">HEIC → JPEG / base64 인코딩</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node">
+          <div class="node-title">Accept-Language 파싱</div>
+          <div class="node-sub">ko 프롬프트 / en 프롬프트 선택</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node green">
+          <div class="node-title">nutrition_service.py</div>
+          <div class="node-sub">asyncio.gather() 병렬 분기</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="parallel-wrap">
+          <div class="parallel-connector">
+            <div class="parallel-left-line"></div>
+            <div class="parallel-right-line"></div>
+          </div>
+          <div class="parallel-nodes">
+            <div class="parallel-node pnode-gemini">
+              <div class="node-title">Gemini 2.5 Flash</div>
+              <div class="node-sub">langchain-google-genai</div>
+            </div>
+            <div class="parallel-node pnode-claude">
+              <div class="node-title">Claude Sonnet 4.6</div>
+              <div class="node-sub">langchain-anthropic</div>
+            </div>
+          </div>
+          <div class="parallel-merge">
+            <div class="parallel-merge-left"></div>
+            <div class="parallel-merge-right"></div>
+          </div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node">
+          <div class="node-title">JSON 파싱 · 통합</div>
+          <div class="node-sub">DetectedFoodItem 리스트 조합</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node green">
+          <div class="node-title">CalorieResult 반환</div>
+          <div class="node-sub">camelCase JSON → Android Gson</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="flow-section-title">GET /v1/analyze-food-text</div>
+      <div class="vflow">
+        <div class="vflow-node blue">
+          <div class="node-title">📱 Android 요청</div>
+          <div class="node-sub">?text=우동,새우튀김</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node">
+          <div class="node-title">텍스트 프롬프트 구성</div>
+          <div class="node-sub">쉼표·공백 구분 파싱</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node green">
+          <div class="node-title">nutrition_service.py</div>
+          <div class="node-sub">asyncio.gather() 병렬 호출</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node green">
+          <div class="node-title">CalorieResult 반환</div>
+          <div class="node-sub">imageReceived: false</div>
+        </div>
+      </div>
+      <div style="height:20px"></div>
+      <div class="flow-section-title" style="margin-top:8px">GET /v1/recommend-daily-calories</div>
+      <div class="vflow">
+        <div class="vflow-node blue">
+          <div class="node-title">📱 Android 요청</div>
+          <div class="node-sub">age · gender · weightKg · heightCm</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node">
+          <div class="node-title">Pydantic Query 검증</div>
+          <div class="node-sub">age 1~120, gender male/female</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node">
+          <div class="node-title">Harris–Benedict 공식</div>
+          <div class="node-sub">BMR 계산 (나이·성별·체중·키)</div>
+        </div>
+        <div class="vflow-arrow"></div>
+        <div class="vflow-node green">
+          <div class="node-title">dailyCaloriesKcal 반환</div>
+          <div class="node-sub">예: {"dailyCaloriesKcal": 2183.5}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ API ══════════════════════ -->
+<section id="api">
+  <div class="section-header">
+    <p class="section-label">FastAPI Server</p>
+    <h2 class="section-title">API 엔드포인트</h2>
+    <p class="section-desc">배포 주소: <code class="inline">https://ai-nutrition-server-production-618a.up.railway.app</code></p>
+  </div>
+  <div class="endpoint-list">
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <div>
+        <div class="endpoint-path">/health</div>
+        <div class="endpoint-desc">서버 상태 확인. 배포 환경 헬스체크용.</div>
+        <div class="endpoint-params"><span class="param-chip">→ {"status": "ok"}</span></div>
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <div>
+        <div class="endpoint-path">/v1/analyze-food</div>
+        <div class="endpoint-desc">음식 이미지 업로드 → Gemini + Claude 병렬 분석. HEIC 자동 변환 지원.</div>
+        <div class="endpoint-params">
+          <span class="param-chip">Content-Type: multipart/form-data</span>
+          <span class="param-chip">image: File (JPEG/PNG/HEIC)</span>
+          <span class="param-chip">X-API-Key: string</span>
+          <span class="param-chip">Accept-Language: ko | en</span>
+        </div>
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <div>
+        <div class="endpoint-path">/v1/analyze-food-text</div>
+        <div class="endpoint-desc">음식 이름 텍스트로 분석. 쉼표 또는 공백으로 여러 음식 한 번에 요청 가능.</div>
+        <div class="endpoint-params">
+          <span class="param-chip">text: string (필수)</span>
+          <span class="param-chip">Accept-Language: ko | en</span>
+        </div>
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <div>
+        <div class="endpoint-path">/v1/recommend-daily-calories</div>
+        <div class="endpoint-desc">나이·성별·체중·키 기반 Harris–Benedict 공식으로 하루 권장 칼로리 계산.</div>
+        <div class="endpoint-params">
+          <span class="param-chip">age: int (필수, 1~120)</span>
+          <span class="param-chip">gender: male|female (필수)</span>
+          <span class="param-chip">weightKg: float (선택)</span>
+          <span class="param-chip">heightCm: float (선택)</span>
+        </div>
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <div>
+        <div class="endpoint-path">/docs</div>
+        <div class="endpoint-desc">Swagger UI 자동 문서. Authorize 버튼에 X-API-Key 입력 후 "Try it out" 사용 가능.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ SCHEMA ══════════════════════ -->
+<section id="schema">
+  <div class="section-header">
+    <p class="section-label">Data Model</p>
+    <h2 class="section-title">응답 데이터 모델</h2>
+    <p class="section-desc">Pydantic v2 camelCase 응답 모델. Android Kotlin 데이터 클래스와 <code class="inline">@SerializedName</code> 없이 1:1 매핑됩니다.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div>
+      <div class="schema-card">
+        <div class="schema-title">CalorieResult</div>
+        <div class="schema-fields">
+          <div class="schema-row"><span class="sf-name">requestId</span><span class="sf-type">String</span><span class="sf-desc">요청 추적용 UUID</span></div>
+          <div class="schema-row"><span class="sf-name">analyzedAt</span><span class="sf-type">String</span><span class="sf-desc">분석 시각 (ISO-8601 UTC)</span></div>
+          <div class="schema-row"><span class="sf-name">imageReceived</span><span class="sf-type">Boolean</span><span class="sf-desc">이미지 분석이면 true, 텍스트면 false</span></div>
+          <div class="schema-row"><span class="sf-name">imageSizeBytes</span><span class="sf-type">Int?</span><span class="sf-desc">이미지 크기 (텍스트 분석 시 null)</span></div>
+          <div class="schema-row"><span class="sf-name">message</span><span class="sf-type">String</span><span class="sf-desc">분석 상태 메시지</span></div>
+          <div class="schema-row"><span class="sf-name">geminiItems</span><span class="sf-type">List</span><span class="sf-desc">Gemini가 식별한 음식 목록</span></div>
+          <div class="schema-row"><span class="sf-name">claudeItems</span><span class="sf-type">List</span><span class="sf-desc">Claude가 식별한 음식 목록</span></div>
+          <div class="schema-row"><span class="sf-name">geminiTotalCaloriesKcal</span><span class="sf-type">Float?</span><span class="sf-desc">Gemini 총 칼로리 (실패 시 null)</span></div>
+          <div class="schema-row"><span class="sf-name">claudeTotalCaloriesKcal</span><span class="sf-type">Float?</span><span class="sf-desc">Claude 총 칼로리 (실패 시 null)</span></div>
+          <div class="schema-row"><span class="sf-name">disclaimer</span><span class="sf-type">String</span><span class="sf-desc">AI 추정치 안내 문구</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="schema-card">
+        <div class="schema-title">DetectedFoodItem</div>
+        <div class="schema-fields">
+          <div class="schema-row"><span class="sf-name">foodName</span><span class="sf-type">String</span><span class="sf-desc">음식 이름</span></div>
+          <div class="schema-row"><span class="sf-name">confidence</span><span class="sf-type">Float</span><span class="sf-desc">신뢰도 (0.0 ~ 1.0)</span></div>
+          <div class="schema-row"><span class="sf-name">portionDescription</span><span class="sf-type">String</span><span class="sf-desc">분량 설명</span></div>
+          <div class="schema-row"><span class="sf-name">caloriesKcal</span><span class="sf-type">Float</span><span class="sf-desc">추정 칼로리 (kcal)</span></div>
+          <div class="schema-row"><span class="sf-name">macros</span><span class="sf-type">Macros</span><span class="sf-desc">3대 영양소 객체</span></div>
+        </div>
+      </div>
+      <div class="schema-card">
+        <div class="schema-title">Macros</div>
+        <div class="schema-fields">
+          <div class="schema-row"><span class="sf-name">carbohydrateG</span><span class="sf-type">Float?</span><span class="sf-desc">탄수화물 (g)</span></div>
+          <div class="schema-row"><span class="sf-name">proteinG</span><span class="sf-type">Float?</span><span class="sf-desc">단백질 (g)</span></div>
+          <div class="schema-row"><span class="sf-name">fatG</span><span class="sf-type">Float?</span><span class="sf-desc">지방 (g)</span></div>
+        </div>
+      </div>
+      <div class="schema-card">
+        <div class="schema-title">DailyCalorieResult</div>
+        <div class="schema-fields">
+          <div class="schema-row"><span class="sf-name">dailyCaloriesKcal</span><span class="sf-type">Float</span><span class="sf-desc">하루 권장 칼로리 (예: 2183.5)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ STACK ══════════════════════ -->
+<section id="stack">
+  <div class="section-header">
+    <p class="section-label">기술 스택</p>
+    <h2 class="section-title">사용 기술</h2>
+  </div>
+  <div class="stack-section">
+    <div>
+      <h3 style="font-size:15px;font-weight:600;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border)">📱 Android App</h3>
+      <div class="stack-group-list">
+        <div class="stack-group">
+          <h4>언어 / 비동기</h4>
+          <div class="tags">
+            <span class="tag green">Kotlin 2.3.20</span>
+            <span class="tag">Coroutines</span>
+            <span class="tag">StateFlow</span>
+            <span class="tag">SharedFlow</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h4>UI</h4>
+          <div class="tags">
+            <span class="tag blue">Jetpack Compose</span>
+            <span class="tag blue">Material 3</span>
+            <span class="tag blue">Compose Navigation</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h4>아키텍처 / DI</h4>
+          <div class="tags">
+            <span class="tag purple">Clean Architecture</span>
+            <span class="tag purple">Multi-Module</span>
+            <span class="tag purple">Hilt</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h4>네트워크 / 이미지</h4>
+          <div class="tags">
+            <span class="tag">Retrofit</span>
+            <span class="tag">OkHttp</span>
+            <span class="tag">Gson</span>
+            <span class="tag">Coil</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h4>로컬 DB / 카메라</h4>
+          <div class="tags">
+            <span class="tag amber">Room + KSP</span>
+            <span class="tag amber">CameraX</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h4>테스트 / 기타</h4>
+          <div class="tags">
+            <span class="tag">JUnit4</span>
+            <span class="tag">MockK</span>
+            <span class="tag">Turbine</span>
+            <span class="tag">Truth</span>
+            <span class="tag">Firebase Crashlytics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;font-weight:600;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border)">⚡ FastAPI Server</h3>
+      <div class="stack-group-list">
+        <div class="stack-group">
+          <h4>런타임 / 프레임워크</h4>
+          <div class="tags">
+            <span class="tag green">Python 3.9+</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Uvicorn</span>
+            <span class="tag">asyncio</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h4>AI / LLM</h4>
+          <div class="tags">
+            <span class="tag blue">Gemini 2.5 Flash</span>
+            <span class="tag green">Claude Sonnet 4.6</span>
+            <span class="tag">LangChain</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h4>직렬화 / 검증</h4>
+          <div class="tags">
+            <span class="tag">Pydantic v2</span>
+            <span class="tag">camelCase alias</span>
+            <span class="tag">pydantic-settings</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h4>이미지 처리</h4>
+          <div class="tags">
+            <span class="tag">Pillow</span>
+            <span class="tag">pillow-heif</span>
+            <span class="tag">base64</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h4>보안 / 배포</h4>
+          <div class="tags">
+            <span class="tag amber">Railway</span>
+            <span class="tag">X-API-Key 인증</span>
+            <span class="tag">Rate Limit 20회/분</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:28px">
+        <div class="deploy-card" style="grid-template-columns:1fr">
+          <div class="deploy-item">
+            <strong>배포 플랫폼</strong>
+            <span>Railway — main 브랜치 push 시 자동 빌드·배포</span>
+          </div>
+          <div class="deploy-item" style="margin-top:12px">
+            <strong>라이브 주소</strong>
+            <div class="deploy-url">https://ai-nutrition-server-production-618a.up.railway.app</div>
+          </div>
+          <div class="deploy-item" style="margin-top:12px">
+            <strong>Swagger UI</strong>
+            <div class="deploy-url">…up.railway.app/docs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer>
+  <p>
+    <a href="https://github.com/idKimjunseok/KcalSearch" target="_blank">Android App</a> ·
+    <a href="https://github.com/idKimjunseok/ai-nutrition-server" target="_blank">AI Server</a> ·
+    <a href="https://ai-nutrition-server-production-618a.up.railway.app/docs" target="_blank">Live API Docs</a>
+  </p>
+  <p style="margin-top:8px">김준석 · Android Developer</p>
+</footer>
+
+<script>
+const links = document.querySelectorAll('.toc-link');
+const sections = document.querySelectorAll('section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      links.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector('.toc-link[href="#'+e.target.id+'"]');
+      if(active) active.classList.add('active');
+    }
+  });
+}, {threshold:0.15, rootMargin:'-60px 0px -65% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
