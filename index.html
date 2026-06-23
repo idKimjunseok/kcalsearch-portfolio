@@ -794,12 +794,15 @@ footer a{color:var(--green);text-decoration:none}
         <div style="padding-left:28px">├── <span style="color:var(--blue-dark);font-weight:600">api/</span></div>
         <div style="padding-left:44px">└── endpoints.py <span style="color:var(--muted-light)">— 라우터 (4개)</span></div>
         <div style="padding-left:28px">├── <span style="color:var(--green);font-weight:600">core/</span></div>
-        <div style="padding-left:44px">└── config.py <span style="color:var(--muted-light)">— 환경변수</span></div>
+        <div style="padding-left:44px">└── config.py · security.py · rate_limit.py <span style="color:var(--muted-light)">— 환경변수·인증·Rate Limit</span></div>
         <div style="padding-left:28px">├── <span style="color:var(--amber-dark);font-weight:600">models/</span></div>
         <div style="padding-left:44px">└── schemas.py <span style="color:var(--muted-light)">— Pydantic 모델</span></div>
         <div style="padding-left:28px">├── <span style="color:var(--green);font-weight:600">services/</span></div>
-        <div style="padding-left:44px">└── nutrition_service.py</div>
-        <div style="padding-left:44px"><span style="color:var(--muted-light)">— AI 병렬 호출 로직</span></div>
+        <div style="padding-left:44px">├── nutrition_service.py <span style="color:var(--muted-light)">— 오케스트레이션</span></div>
+        <div style="padding-left:44px">├── i18n.py <span style="color:var(--muted-light)">— 언어 판별·다국어 메시지</span></div>
+        <div style="padding-left:44px">├── parsing.py <span style="color:var(--muted-light)">— LLM 응답 파싱</span></div>
+        <div style="padding-left:44px">├── providers/ <span style="color:var(--muted-light)">— common.py · gemini.py · claude.py</span></div>
+        <div style="padding-left:44px">└── prompts/ <span style="color:var(--muted-light)">— image · text(ko/en) · daily-calorie</span></div>
         <div style="padding-left:28px">└── <span style="color:var(--purple);font-weight:600">utils/</span></div>
         <div style="padding-left:44px">└── image_utils.py</div>
         <div style="padding-left:44px"><span style="color:var(--muted-light)">— HEIC→JPEG 변환</span></div>
@@ -818,8 +821,8 @@ footer a{color:var(--green);text-decoration:none}
       <div class="sflow-item">
         <div class="sflow-num" style="background:var(--green-light);color:var(--green-dark)">co</div>
         <div class="sflow-text">
-          <strong>config.py</strong>
-          <span>pydantic-settings로 .env의 API 키·모델 ID·커스텀 프롬프트를 로드하는 Settings 싱글턴.</span>
+          <strong>config.py / security.py / rate_limit.py</strong>
+          <span>pydantic-settings 기반 Settings, X-API-Key 인증, IP당 분당 호출 제한.</span>
         </div>
       </div>
       <div class="sflow-item">
@@ -833,7 +836,35 @@ footer a{color:var(--green);text-decoration:none}
         <div class="sflow-num">sv</div>
         <div class="sflow-text">
           <strong>nutrition_service.py</strong>
-          <span>asyncio.gather()로 Gemini·Claude 동시 호출. 각 응답을 DetectedFoodItem으로 파싱 후 CalorieResult에 통합.</span>
+          <span>providers/prompts/i18n/parsing을 조합해 Gemini·Claude를 병렬 호출하고 결과를 합치는 오케스트레이션만 담당 (780줄 → 175줄로 축소).</span>
+        </div>
+      </div>
+      <div class="sflow-item">
+        <div class="sflow-num" style="background:var(--blue-light);color:var(--blue-dark)">pv</div>
+        <div class="sflow-text">
+          <strong>providers/gemini.py · claude.py</strong>
+          <span>AI별 클라이언트 생성과 호출/응답 추출만 담당. 한쪽 AI 변경이 다른 쪽에 영향을 주지 않도록 완전 독립.</span>
+        </div>
+      </div>
+      <div class="sflow-item">
+        <div class="sflow-num" style="background:var(--purple-light);color:var(--purple-dark)">pr</div>
+        <div class="sflow-text">
+          <strong>prompts/</strong>
+          <span>이미지·하루칼로리 프롬프트와, 한국어·영어로 완전히 분리된 텍스트 분석 프롬프트(text_prompt_ko.py / text_prompt_en.py).</span>
+        </div>
+      </div>
+      <div class="sflow-item">
+        <div class="sflow-num" style="background:var(--green-light);color:var(--green-dark)">i18</div>
+        <div class="sflow-text">
+          <strong>i18n.py</strong>
+          <span>Accept-Language 헤더 파싱과 공지문·실패 메시지 등 모든 다국어 응답 문구를 한곳에 모음.</span>
+        </div>
+      </div>
+      <div class="sflow-item">
+        <div class="sflow-num" style="background:var(--amber-light);color:var(--amber-dark)">ps</div>
+        <div class="sflow-text">
+          <strong>parsing.py</strong>
+          <span>LLM 텍스트 응답을 JSON으로 파싱하고 CalorieResult/DailyCalorieRecommendation으로 변환하는 로직만 전담.</span>
         </div>
       </div>
       <div class="sflow-item">
